@@ -1,1 +1,4 @@
-# chb_project
+# Requirements
+
+- docker-machine 
+- aws cli
