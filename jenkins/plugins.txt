@@ -30,6 +30,5 @@ custom-tools-plugin:latest
 telegram-notifications:latest
 pipeline-utility-steps:latest
 publish-over-ssh:latest
-green-balls:latest
+greenballs:latest
 ssh-agent:latest
-ssh-slave:latest
