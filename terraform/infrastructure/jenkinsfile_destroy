@@ -1,0 +1,89 @@
+pipeline {
+
+    agent { label "jenkins-agent" }
+
+    tools {
+        terraform 'terraform'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
+        timestamps()
+        ansiColor('xtrem')
+    }
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('accessKey')
+        AWS_SECRET_ACCESS_KEY = credentials('secretKey')
+        PROJECT_FOLDER_PATH = 'diplom/terraform/infra'
+        KUBECONFIG = '/home/jenkins/.kube/config'
+    }
+
+    stages {
+        stage('Terraform Init') {
+            steps {
+                dir(PROJECT_FOLDER_PATH) {
+                    sh "terraform init -input=false"
+                }
+            }
+        }
+
+        stage('Terraform validate') {
+            steps {
+                dir(PROJECT_FOLDER_PATH) {
+                    sh "terraform validate"
+                }
+            }
+        }
+
+        stage('Terraform plan') {
+            steps {
+                script {
+                    SKIP_TERRAFORM_APPLY = false
+                    dir(PROJECT_FOLDER_PATH) {
+                        log = sh(returnStdout: true, script: "terraform plan -destroy -var 'access_key=${AWS_ACCESS_KEY_ID}' -var 'secret_key=${AWS_SECRET_ACCESS_KEY}' -out terraform.tfplan").trim()
+                        println log
+                        log.readLines().collect { line ->
+                            if (line =~ "No changes") {
+                                SKIP_TERRAFORM_APPLY = true
+                            }
+                        }
+                        stash name: "terraform-plan", includes: "terraform.tfplan"
+                    }
+                }
+            }
+        }
+
+        stage('Terraform apply') {
+            when {
+                expression { !SKIP_TERRAFORM_APPLY }
+            }
+            steps {
+                script {
+                    def apply = false
+                    input message: 'Confirm plan?', ok: 'Apply'
+                    apply = true
+                    if (apply) {
+                        dir(PROJECT_FOLDER_PATH) {
+                            unstash "terraform-plan"
+                            sh "terraform apply terraform.tfplan"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Delete KUBECONFIG') {
+            steps {
+                script {
+                    try {
+                        sh "rm ${KUBECONFIG}"
+                    } catch (err) {
+                        println "Failed remove ${KUBECONFIG} (${err.getMessage()})"
+                    }
+                }
+            }
+        }
+    }
+}
