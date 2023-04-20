@@ -1,8 +1,8 @@
 BACKEND_S3_BUCKET='terraform {\n
     backend "s3" {\n
-        bucket = "dos11-diplom-example-backend"\n
-        key    = "s3_bucket/terraform.tfstate"\n
-        region = "eu-central-1"\n
+        bucket = "dos11-odinichenko"\n
+        key    = "infrastructure/terraform.tfstate"\n
+        region = "us-east-1"\n
     }\n
 }'
 
