@@ -2,7 +2,7 @@ variable "tags" {
     type = map(any)
     default = {
         Project   = "diplom"
-        Name      = "dos11"
+        Name      = "odinichenko"
         Terraform = true
     } 
 }
@@ -17,10 +17,10 @@ variable "secret_key" {
 
 variable "aws_region_name" {
     type = string
-    default = "eu-central-1"
+    default = "us-east-1"
 }
 
 variable "aws_key_pair_name" {
     type = string
-    default = "raguzin_frankfurt_key"
+    default = "odinichenko"
 }

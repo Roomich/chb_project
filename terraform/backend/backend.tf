@@ -1,7 +1,7 @@
 terraform {
     backend "s3" {
-        bucket = "dos11-diplom-example-backend"
+        bucket = "dos11-odinichenko"
         key    = "s3_bucket/terraform.tfstate"
-        region = "eu-central-1"
+        region = "us-east-1"
     }
 }
