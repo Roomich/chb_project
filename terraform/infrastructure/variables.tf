@@ -1,26 +1,26 @@
 variable "tags" {
-    type = map(any)
-    default = {
-        Project   = "diplom"
-        Name      = "odinichenko"
-        Terraform = true
-    } 
+  type = map(any)
+  default = {
+    Project   = "diplom"
+    Name      = "odinichenko"
+    Terraform = true
+  }
 }
 
-variable "access_key" {
-    type = string
+variable "acces_key" {
+  type = string
 }
 
 variable "secret_key" {
-    type = string
+  type = string
 }
 
 variable "aws_region_name" {
-    type = string
-    default = "us-east-1"
+  type = string
+  default = "us-east-1"
 }
 
 variable "aws_key_pair_name" {
-    type = string
-    default = "odinichenko"
+  type = string
+  default = "odinichenko"
 }

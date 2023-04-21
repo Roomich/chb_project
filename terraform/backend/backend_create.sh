@@ -1,9 +1,9 @@
 BACKEND_S3_BUCKET='terraform {\n
-    backend "s3" {\n
-        bucket = "dos11-odinichenko"\n
-        key    = "infrastructure/terraform.tfstate"\n
-        region = "us-east-1"\n
-    }\n
+  backend "s3" {\n
+    bucket = "odinichenko-backend-bucket"\n
+    key    = "backend/terraform.tfstate"\n
+    region = "us-east-1"\n
+  }\n
 }'
 
 # First Initializing
@@ -15,3 +15,4 @@ terraform fmt
 # Copy state to S3 bucket state
 terraform init -force-copy
 echo "Finished initialize"
+
