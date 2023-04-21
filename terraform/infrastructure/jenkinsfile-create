@@ -1,0 +1,26 @@
+pipeline {
+    agent { label "jenkins-agent" }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
+        timestamps()
+        ansiColor('xtrem')
+    }
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('accessKey')
+        ASW_SECRET_ACCESS_KEY = credentials('secretKey')
+        PROJECT_DIR = 'chb_project/terraform/infrastructure'
+    }
+
+    stages {
+        stage('Terraform init') {
+            steps {
+                dir(PROJECT_DIR) {
+                    sh "terraform init -input=false"
+                }
+            }
+        }
+    }
+}
