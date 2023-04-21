@@ -16,7 +16,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('accessKey')
         ASW_SECRET_ACCESS_KEY = credentials('secretKey')
-        AWS_DEFAULT_REGION = us-east-1
+        AWS_DEFAULT_REGION = 'us-east-1'
         PROJECT_DIR = 'terraform/infrastructure'
     }
 
