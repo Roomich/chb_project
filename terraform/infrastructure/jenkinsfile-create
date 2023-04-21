@@ -35,6 +35,14 @@ pipeline {
             }
         }
 
+        stage('Terraform validate') {
+            steps {
+                dir(PROJECT_DIR) {
+                    sh "terraform validate"
+                }
+            }
+        }
+
         stage('Terraform init') {
             steps {
                 dir(PROJECT_DIR) {
