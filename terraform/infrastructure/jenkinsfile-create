@@ -2,6 +2,10 @@ pipeline {
     agent { label "jenkins-agent" }
     // agent any
 
+    tools {
+        terraform 'terraform'
+    }
+
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         disableConcurrentBuilds()
