@@ -27,6 +27,14 @@ pipeline {
         //     }
         // }
 
+        stage('echo variables') {
+            steps {
+                sh """echo $AWS_ACCESS_KEY_ID
+                echo $ASW_SECRET_ACCESS_KEY
+                """
+            }
+        }
+
         stage('Terraform init') {
             steps {
                 dir(PROJECT_DIR) {
