@@ -27,11 +27,11 @@ pipeline {
         //     }
         // }
 
-        stage('echo variables') {
+        stage('Terraform init') {
             steps {
-                sh """echo $AWS_ACCESS_KEY_ID
-                echo $ASW_SECRET_ACCESS_KEY
-                """
+                dir(PROJECT_DIR) {
+                    sh "terraform init"
+                }
             }
         }
 
@@ -39,14 +39,6 @@ pipeline {
             steps {
                 dir(PROJECT_DIR) {
                     sh "terraform validate"
-                }
-            }
-        }
-
-        stage('Terraform init') {
-            steps {
-                dir(PROJECT_DIR) {
-                    sh "terraform init -input=false"
                 }
             }
         }
