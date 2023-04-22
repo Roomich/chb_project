@@ -29,7 +29,7 @@ pipeline {
         stage('Terraform init') {
             steps {
                 dir(PROJECT_DIR) {
-                    sh "terraform init"
+                    sh "terraform init -var 'acces_key=${AWS_ACCESS_KEY_ID}' -var 'secret_key=${ASW_SECRET_ACCESS_KEY}'"
                 }
             }
         }
@@ -38,6 +38,25 @@ pipeline {
             steps {
                 dir(PROJECT_DIR) {
                     sh "terraform validate"
+                }
+            }
+        }
+
+        stage('Terraform plan') {
+            steps {
+                dir(PROJECT_DIR) {
+                    sh "terraform plan -var 'acces_key=${AWS_ACCESS_KEY_ID}' -var 'secret_key=${ASW_SECRET_ACCESS_KEY}' -out terraform.tfplan"
+                    stash name: "terraform-plan", includes: "terraform.tfplan"
+                }
+            }
+        }
+
+        stage('Terraform apply') {
+            steps {
+                dir(PROJECT_DIR) {
+                    unstash "terraform-plan"
+                    sh "terraform apply terraform.tfplan" 
+                    
                 }
             }
         }
